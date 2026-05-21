@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --foreground-secondary: #374151;
+  --surface: #ffffff;
+  --surface-muted: #f9fafb;
+  --cream: #f5f3ee;
+  --canvas: #f8fafc;
+  --border: #f3f4f6;
+  --border-strong: #e5e7eb;
+  --muted: #6b7280;
+  --muted-foreground: #9ca3af;
+  --success-bg: #f0fdf4;
+  --success-border: #bbf7d0;
+  --success-text: #15803d;
+  --info-bg: #eff6ff;
+  --info-border: #bfdbfe;
+  --info-text: #1d4ed8;
+  --warning-bg: #fffbeb;
+  --warning-border: #fde68a;
+  --warning-text: #b45309;
+  --danger-bg: #fef2f2;
+  --danger-border: #fecaca;
+  --danger-text: #dc2626;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --foreground-secondary: #d4d4d4;
+  --surface: #141414;
+  --surface-muted: #1a1a1a;
+  --cream: #121210;
+  --canvas: #0f0f0f;
+  --border: #262626;
+  --border-strong: #404040;
+  --muted: #a3a3a3;
+  --muted-foreground: #737373;
+  --success-bg: rgba(20, 83, 45, 0.35);
+  --success-border: rgba(34, 197, 94, 0.4);
+  --success-text: #86efac;
+  --info-bg: rgba(30, 58, 138, 0.35);
+  --info-border: rgba(59, 130, 246, 0.4);
+  --info-text: #93c5fd;
+  --warning-bg: rgba(120, 53, 15, 0.35);
+  --warning-border: rgba(245, 158, 11, 0.4);
+  --warning-text: #fcd34d;
+  --danger-bg: rgba(127, 29, 29, 0.35);
+  --danger-border: rgba(248, 113, 113, 0.4);
+  --danger-text: #fca5a5;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-cream: var(--cream);
+  --color-canvas: var(--canvas);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-success-bg: var(--success-bg);
+  --color-success-border: var(--success-border);
+  --color-success-text: var(--success-text);
+  --color-info-bg: var(--info-bg);
+  --color-info-border: var(--info-border);
+  --color-info-text: var(--info-text);
+  --color-warning-bg: var(--warning-bg);
+  --color-warning-border: var(--warning-border);
+  --color-warning-text: var(--warning-text);
+  --color-danger-bg: var(--danger-bg);
+  --color-danger-border: var(--danger-border);
+  --color-danger-text: var(--danger-text);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Tailwind preflight sets buttons to cursor: default — restore pointer on interactive UI */
+@layer base {
+  a[href],
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  label[for],
+  select,
+  summary,
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="submit"],
+  input[type="reset"],
+  input[type="button"] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled="true"],
+  input:disabled,
+  select:disabled {
+    cursor: not-allowed;
+  }
+}
+
+/* Ensure Clerk billing drawers (checkout, plan details, subscription details)
+   always render above sticky headers and other stacking contexts on the page. */
+.cl-drawerBackdrop {
+  z-index: 9998 !important;
+}
+.cl-drawerRoot {
+  z-index: 9999 !important;
+}
