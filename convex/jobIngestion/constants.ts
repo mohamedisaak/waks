@@ -7,7 +7,7 @@ export const AGGREGATOR_ORG_NAME = "Waks Job Aggregator";
 export const AGGREGATOR_ORG_SLUG = "waks-aggregator";
 
 export const INGESTION_USER_AGENT =
-  "WaksJobIngestion/1.0 (+https://waks.com; platform-admin)";
+  "WaksJobIngestion/1.0 (+https://www.waks.co.ke; platform-admin)";
 
 export const FETCH_DELAY_MS = 1200;
 export const MAX_DETAIL_FETCHES_PER_BATCH = 8;

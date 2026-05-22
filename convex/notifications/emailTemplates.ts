@@ -10,7 +10,7 @@ function siteBaseUrl(): string {
   return (
     process.env.SITE_URL ??
     process.env.NEXT_PUBLIC_SITE_URL ??
-    "https://waks.com"
+    "https://www.waks.co.ke"
   ).replace(/\/$/, "");
 }
 

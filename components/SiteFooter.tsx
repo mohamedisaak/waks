@@ -3,6 +3,8 @@ import Link from "next/link";
 const FOOTER_LINKS = {
   jobSeekers: [
     { href: "/jobs", label: "Browse jobs" },
+    { href: "/jobs/kenya", label: "Jobs in Kenya" },
+    { href: "/jobs/remote", label: "Remote jobs" },
     { href: "/my-applications", label: "My applications" },
   ],
   employers: [
@@ -11,9 +13,10 @@ const FOOTER_LINKS = {
     { href: "/onboarding/company", label: "Post a job" },
   ],
   company: [
+    { href: "/about", label: "About Waks" },
     { href: "/support", label: "Contact support" },
-    { href: "/", label: "Terms of Service" },
-    { href: "/", label: "Privacy Policy" },
+    { href: "/terms", label: "Terms of Service" },
+    { href: "/privacy", label: "Privacy Policy" },
   ],
 } as const;
 
@@ -35,7 +38,7 @@ export default function SiteFooter() {
               </span>
             </Link>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted">
-              Find your next role or hire great talent — all in one place.
+              Find your next role across East Africa — or hire great talent on Waks.
             </p>
           </div>
 

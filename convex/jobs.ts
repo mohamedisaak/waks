@@ -679,3 +679,43 @@ export const remove = mutation({
     return null;
   },
 });
+
+const sitemapEntryValidator = v.object({
+  id: v.id("jobPostings"),
+  lastModified: v.number(),
+  sourceKind: v.optional(
+    v.union(v.literal("employer"), v.literal("aggregated"))
+  ),
+});
+
+/** Active employer-posted jobs for sitemap generation (aggregated listings excluded). */
+export const listPublicJobSitemapEntries = query({
+  args: {},
+  returns: v.array(sitemapEntryValidator),
+  handler: async (ctx) => {
+    const cap = 50_000;
+    const rows = await ctx.db
+      .query("jobPostings")
+      .withIndex("by_status", (qi) => qi.eq("status", "active"))
+      .order("desc")
+      .take(cap);
+
+    const visible = await filterJobsForPublicJobBoard(ctx, rows);
+    const entries: Array<{
+      id: Doc<"jobPostings">["_id"];
+      lastModified: number;
+      sourceKind: Doc<"jobPostings">["sourceKind"];
+    }> = [];
+
+    for (const job of visible) {
+      if (job.sourceKind === "aggregated") continue;
+      entries.push({
+        id: job._id,
+        lastModified: job.scrapedAt ?? job._creationTime,
+        sourceKind: job.sourceKind,
+      });
+    }
+
+    return entries;
+  },
+});

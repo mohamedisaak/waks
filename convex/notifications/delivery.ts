@@ -17,7 +17,7 @@ async function sendResendEmail(params: {
 }): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const from =
-    process.env.RESEND_FROM_EMAIL ?? "Waks <notifications@waks.com>";
+    process.env.RESEND_FROM_EMAIL ?? "Waks <notifications@waks.co.ke>";
 
   if (!apiKey) {
     throw new Error("RESEND_API_KEY is not configured");

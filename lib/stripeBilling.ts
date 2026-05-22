@@ -51,10 +51,8 @@ export function getStripeFulfillSecret(): string {
   return secret;
 }
 
+import { getSiteOrigin } from "@/lib/siteUrl";
+
 export function resolveSiteOrigin(): string {
-  const raw =
-    process.env.NEXT_PUBLIC_SITE_URL?.trim() ??
-    process.env.SITE_URL?.trim() ??
-    "http://localhost:3000";
-  return raw.replace(/\/$/, "");
+  return getSiteOrigin();
 }

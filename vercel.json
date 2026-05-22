@@ -1,5 +1,13 @@
 {
   "framework": "nextjs",
   "buildCommand": "npm run build",
-  "installCommand": "npm ci"
+  "installCommand": "npm ci",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "waks.co.ke" }],
+      "destination": "https://www.waks.co.ke/:path*",
+      "permanent": true
+    }
+  ]
 }
