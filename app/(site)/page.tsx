@@ -1,15 +1,34 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import SiteHeaderAuth, { BrowseJobsLink } from "@/components/SiteHeaderAuth";
 import HomeMarketingExtras from "@/components/HomeMarketingExtras";
 import MarketingCtaBand from "@/components/MarketingCtaBand";
 import HiringPortalCta from "@/components/HiringPortalCta";
+import WebSiteJsonLd from "@/components/seo/WebSiteJsonLd";
+import { absoluteUrl } from "@/lib/siteUrl";
+
+export const metadata: Metadata = {
+  title: "Waks — Jobs in East Africa",
+  description:
+    "Find and apply to jobs across East Africa. Browse roles in Kenya, Uganda, Tanzania, and remote opportunities on Waks.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Waks — Jobs in East Africa",
+    description:
+      "Find and apply to jobs across East Africa. Browse roles in Kenya, Uganda, Tanzania, and remote opportunities on Waks.",
+    url: absoluteUrl("/"),
+  },
+};
 
 export default async function Home() {
   const { userId, orgId } = await auth();
 
   return (
     <div className="min-h-screen bg-cream">
+      <WebSiteJsonLd />
       {/* Header */}
       <header className="bg-surface/95 backdrop-blur-sm border-b border-border px-6 py-4 sticky top-0 z-20">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -99,13 +118,13 @@ export default async function Home() {
           {/* Hero text */}
           <div className="relative max-w-3xl mx-auto">
             <h1 className="text-5xl sm:text-6xl font-extrabold text-foreground leading-tight tracking-tight mb-5">
-              Find &amp; Hire
+              Find Jobs Across
               <br />
-              Experts for any Job
+              East Africa
             </h1>
             <p className="text-muted text-lg mb-10 max-w-md mx-auto">
-              Jobs &amp; job search. Find jobs in global. Executive jobs &amp;
-              work.
+              Browse roles in Kenya, Uganda, Tanzania, and remote opportunities —
+              apply in minutes on Waks.
             </p>
 
             {/* Search bar */}
@@ -161,16 +180,23 @@ export default async function Home() {
 
             {/* Popular tags */}
             <p className="text-sm text-muted">
-              <span className="font-medium">Popular:</span>{" "}
-              {["Design", "Art", "Business", "Video Editing"].map((tag, i) => (
-                <span key={tag}>
+              <span className="font-medium">Explore:</span>{" "}
+              {[
+                { label: "Jobs in Kenya", href: "/jobs/kenya" },
+                { label: "Remote jobs", href: "/jobs/remote" },
+                { label: "Software", href: "/jobs?search=software" },
+                { label: "Marketing", href: "/jobs?search=marketing" },
+              ].map(({ label, href }, i, arr) => (
+                <span key={href}>
                   <Link
-                    href={`/jobs?search=${encodeURIComponent(tag)}`}
+                    href={href}
                     className="hover:text-[#4CAF7D] transition-colors"
                   >
-                    {tag}
+                    {label}
                   </Link>
-                  {i < 3 && <span className="text-muted-foreground mx-1">,</span>}
+                  {i < arr.length - 1 && (
+                    <span className="text-muted-foreground mx-1">,</span>
+                  )}
                 </span>
               ))}
             </p>

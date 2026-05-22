@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SUPPORT_EMAIL } from "@/lib/siteUrl";
 
 export const metadata = {
   title: "Contact Support — Waks",
@@ -51,7 +52,7 @@ export default function SupportPage() {
               Send us a message
             </h2>
             <form
-              action="mailto:support@waks.com"
+              action={`mailto:${SUPPORT_EMAIL}`}
               method="get"
               encType="text/plain"
               className="space-y-5"
@@ -125,13 +126,13 @@ export default function SupportPage() {
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <a
-                href="mailto:support@waks.com"
+                href={`mailto:${SUPPORT_EMAIL}`}
                 className="flex flex-1 items-center gap-3 rounded-xl border border-border-strong px-4 py-3 text-sm text-foreground-secondary transition-colors hover:border-slate-400"
               >
                 <svg className="h-5 w-5 flex-shrink-0 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
-                <span>support@waks.com</span>
+                <span>{SUPPORT_EMAIL}</span>
               </a>
               <div className="flex flex-1 items-center gap-3 rounded-xl border border-border-strong px-4 py-3 text-sm text-muted">
                 <svg className="h-5 w-5 flex-shrink-0 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

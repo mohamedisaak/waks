@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import AdminShell from "@/components/AdminShell";
 
 export const metadata: Metadata = {
+  title: "Company onboarding",
   robots: { index: false, follow: false },
 };
 
-export default function AdminLayout({
+export default function CompanyOnboardingLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <AdminShell>{children}</AdminShell>;
+  return children;
 }
