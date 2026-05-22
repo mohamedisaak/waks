@@ -39,6 +39,7 @@ import type * as jobIngestion_fetchHtml from "../jobIngestion/fetchHtml.js";
 import type * as jobIngestion_heuristics from "../jobIngestion/heuristics.js";
 import type * as jobIngestion_parseJobSections from "../jobIngestion/parseJobSections.js";
 import type * as jobIngestion_runs from "../jobIngestion/runs.js";
+import type * as jobIngestion_schedule from "../jobIngestion/schedule.js";
 import type * as jobIngestion_seed from "../jobIngestion/seed.js";
 import type * as jobIngestion_types from "../jobIngestion/types.js";
 import type * as jobIngestion_upsert from "../jobIngestion/upsert.js";
@@ -111,6 +112,7 @@ declare const fullApi: ApiFromModules<{
   "jobIngestion/heuristics": typeof jobIngestion_heuristics;
   "jobIngestion/parseJobSections": typeof jobIngestion_parseJobSections;
   "jobIngestion/runs": typeof jobIngestion_runs;
+  "jobIngestion/schedule": typeof jobIngestion_schedule;
   "jobIngestion/seed": typeof jobIngestion_seed;
   "jobIngestion/types": typeof jobIngestion_types;
   "jobIngestion/upsert": typeof jobIngestion_upsert;

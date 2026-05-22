@@ -35,4 +35,11 @@ crons.interval(
   {}
 );
 
+crons.interval(
+  "job-ingestion-refresh",
+  { hours: 12 },
+  internal.jobIngestion.schedule.kickoffScheduledIngestion,
+  { minActiveJobs: 25, maxPagesPerSource: 3 }
+);
+
 export default crons;

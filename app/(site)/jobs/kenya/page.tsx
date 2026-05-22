@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { fetchQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import { absoluteUrl } from "@/lib/siteUrl";
+import JobsListingStatic from "@/components/jobs/JobsListingStatic";
 import JobsPageClient from "../JobsPageClient";
 
 export const metadata: Metadata = {
@@ -31,6 +32,9 @@ export default async function JobsKenyaPage() {
       heading="Jobs in Kenya"
       subheading="Open roles across Nairobi, Mombasa, Kisumu, and the rest of Kenya."
       initialResults={data.page}
+      seoFallback={
+        <JobsListingStatic jobs={data.page} srOnlyTitle="Jobs in Kenya on Waks" />
+      }
     />
   );
 }

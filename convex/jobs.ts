@@ -688,6 +688,62 @@ const sitemapEntryValidator = v.object({
   ),
 });
 
+const publicBoardStatsValidator = v.object({
+  activeTotal: v.number(),
+  activeEmployer: v.number(),
+  activeAggregated: v.number(),
+  activeHidden: v.number(),
+  activeSuspendedOrg: v.number(),
+  publicBoardVisible: v.number(),
+  sitemapEligible: v.number(),
+});
+
+/** Lightweight counts for SEO health checks and ops dashboards. */
+export const getPublicBoardStats = query({
+  args: {},
+  returns: publicBoardStatsValidator,
+  handler: async (ctx) => {
+    const cap = 5000;
+    const active = await ctx.db
+      .query("jobPostings")
+      .withIndex("by_status", (q) => q.eq("status", "active"))
+      .take(cap);
+
+    let activeEmployer = 0;
+    let activeAggregated = 0;
+    let activeHidden = 0;
+    let activeSuspendedOrg = 0;
+
+    for (const job of active) {
+      if (job.sourceKind === "aggregated") {
+        activeAggregated += 1;
+      } else {
+        activeEmployer += 1;
+      }
+      if (job.platformHiddenAt !== undefined) {
+        activeHidden += 1;
+      }
+      const org = await ctx.db.get(job.orgId);
+      if (org?.platformSuspendedAt !== undefined) {
+        activeSuspendedOrg += 1;
+      }
+    }
+
+    const visible = await filterJobsForPublicJobBoard(ctx, active);
+    const sitemapEligible = visible.filter((j) => j.sourceKind !== "aggregated").length;
+
+    return {
+      activeTotal: active.length,
+      activeEmployer,
+      activeAggregated,
+      activeHidden,
+      activeSuspendedOrg,
+      publicBoardVisible: visible.length,
+      sitemapEligible,
+    };
+  },
+});
+
 /** Active employer-posted jobs for sitemap generation (aggregated listings excluded). */
 export const listPublicJobSitemapEntries = query({
   args: {},

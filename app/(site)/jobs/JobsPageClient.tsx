@@ -12,13 +12,8 @@ import { useSearchParams } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { Fragment, Suspense, useEffect, useState } from "react";
 import HomeHeader from "@/components/HomeHeader";
+import JobListingCard from "@/components/jobs/JobListingCard";
 import { JobsInlineAdStrip, JobsSidebarAds } from "@/components/MarketingAdSlots";
-import {
-  aggregatedSourceLabel,
-  isAggregatedJob,
-  jobEmployerDisplayName,
-  shouldShowSourceAttribution,
-} from "@/lib/aggregatedJob";
 
 export type JobsPageInitialFilters = {
   defaultSearch?: string;
@@ -31,16 +26,9 @@ export type JobsPageContentProps = JobsPageInitialFilters & {
   heading?: string;
   subheading?: string;
   initialResults?: Doc<"jobPostings">[];
+  /** Server-rendered listing HTML for crawlers; hidden after client hydration. */
+  seoFallback?: React.ReactNode;
 };
-function formatSalary(min?: number, max?: number) {
-  if (!min && !max) return null;
-  const fmt = (n: number) =>
-    n >= 1000 ? `$${(n / 1000).toFixed(0)}k` : `$${n}`;
-  if (min && max) return `${fmt(min)} – ${fmt(max)} USD`;
-  if (min) return `From ${fmt(min)} USD`;
-  if (max) return `Up to ${fmt(max)} USD`;
-  return null;
-}
 
 function parseSalaryFloor(raw: string): number | undefined {
   const trimmed = raw.replace(/,/g, "").trim();
@@ -75,135 +63,6 @@ function parseEmploymentType(raw: string | null): EmploymentTypeFilter {
   return "";
 }
 
-function JobListingCard({ job }: { job: Doc<"jobPostings"> }) {
-  const salary = formatSalary(job.salaryMin, job.salaryMax);
-  const aggregated = isAggregatedJob(job);
-  const employer = jobEmployerDisplayName(job);
-  return (
-    <div className="bg-surface border border-border-strong rounded-2xl p-5 hover:border-border-strong hover:shadow-sm transition-all">
-      <div className="flex items-start gap-4">
-        <div className="h-10 w-10 rounded-xl bg-[#4CAF7D]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <svg
-            className="h-5 w-5 text-[#4CAF7D]"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1.581.814L10 14.197l-4.419 2.617A1 1 0 014 16V4z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2 className="font-semibold text-foreground text-base leading-tight">
-                {job.title}
-              </h2>
-              {employer && (
-                <p className="text-sm text-foreground-secondary mt-0.5">
-                  {employer}
-                </p>
-              )}
-              <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-                {aggregated && shouldShowSourceAttribution(job) && (
-                  <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs text-amber-800">
-                    External · {aggregatedSourceLabel(job)}
-                  </span>
-                )}
-                {job.featured && (
-                  <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600">
-                    ★
-                  </span>
-                )}
-                <span className="text-sm text-muted-foreground">{job.location}</span>
-                <span className="flex items-center gap-0.5 text-xs text-muted-foreground">
-                  <svg
-                    className="h-3 w-3"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.274 1.765 11.842 11.842 0 00.757.433 5.73 5.73 0 00.28.14l.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  {job.locationType === "remote"
-                    ? "Remote"
-                    : job.locationType === "onsite"
-                      ? "On-site"
-                      : "Hybrid"}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <p className="text-sm text-muted-foreground mt-2 leading-relaxed line-clamp-2">
-            {job.description}
-          </p>
-
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-border-strong bg-surface px-3 py-1 text-xs text-muted">
-                <svg
-                  className="h-3 w-3 text-muted-foreground"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z"
-                    clipRule="evenodd"
-                  />
-                  <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
-                </svg>
-                {job.employmentType}
-              </span>
-              <span className="inline-flex items-center rounded-full border border-border-strong bg-surface px-3 py-1 text-xs text-muted">
-                {job.locationType}
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              {salary && (
-                <div className="flex items-center gap-1 text-sm font-semibold text-[#4CAF7D]">
-                  <svg
-                    className="h-3.5 w-3.5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.33.615zM10 .75a9.25 9.25 0 100 18.5A9.25 9.25 0 0010 .75zm-4.5 9.25a4.5 4.5 0 014.5-4.5v-.5a.75.75 0 011.5 0v.5a4.5 4.5 0 014.5 4.5.75.75 0 01-1.5 0 3 3 0 00-3-3v3.354l.449.137.05.016c.585.191 1.243.52 1.676.983.396.423.575.955.575 1.51 0 .555-.18 1.087-.575 1.51-.433.463-1.091.792-1.676.983l-.499.154v.488a.75.75 0 01-1.5 0v-.488l-.499-.154c-.585-.191-1.243-.52-1.676-.983C6.68 12.587 6.5 12.055 6.5 11.5c0-.555.18-1.087.575-1.51.433-.463 1.091-.792 1.676-.983l.05-.016.449-.137V5.5a3 3 0 00-3 3z" />
-                  </svg>
-                  {salary}
-                </div>
-              )}
-              <Link
-                href={`/jobs/${job._id}`}
-                className="inline-flex items-center gap-1.5 bg-[#4CAF7D] text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-[#3d9e6e] transition-colors"
-              >
-                Details
-                <svg
-                  className="h-3.5 w-3.5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function JobsPageClient(props: JobsPageContentProps) {
   return (
     <Suspense
@@ -226,8 +85,16 @@ function JobsPageContent({
   heading = "Find your next role",
   subheading = "Search openings by title, location, or type — then save the ones you like.",
   initialResults,
+  seoFallback,
 }: JobsPageContentProps) {
   const { userId } = useAuth();
+
+  useEffect(() => {
+    const el = document.querySelector("[data-seo-job-list]");
+    if (el) {
+      el.setAttribute("hidden", "");
+    }
+  }, []);
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
@@ -550,6 +417,8 @@ function JobsPageContent({
           </label>
         </div>
 
+
+        {seoFallback}
 
         <p className="text-xs text-muted-foreground mb-4">
           {status === "LoadingFirstPage" && !initialResults?.length

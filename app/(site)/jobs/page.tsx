@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { fetchQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import { absoluteUrl } from "@/lib/siteUrl";
+import JobsListingStatic from "@/components/jobs/JobsListingStatic";
 import JobsPageClient from "./JobsPageClient";
 
 export const metadata: Metadata = {
@@ -24,5 +25,15 @@ export default async function JobsPage() {
     paginationOpts: { numItems: 20, cursor: null },
   });
 
-  return <JobsPageClient initialResults={data.page} />;
+  return (
+    <JobsPageClient
+      initialResults={data.page}
+      seoFallback={
+        <JobsListingStatic
+          jobs={data.page}
+          srOnlyTitle="Latest job openings on Waks"
+        />
+      }
+    />
+  );
 }

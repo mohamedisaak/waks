@@ -28,7 +28,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily" as const,
       priority: 0.7,
     }));
-  } catch {
+    if (process.env.NODE_ENV === "production") {
+      console.info(
+        `[sitemap] ${STATIC_ROUTES.length} static + ${jobEntries.length} employer job URLs`
+      );
+    }
+  } catch (error) {
+    console.error("[sitemap] Failed to load job URLs from Convex:", error);
     jobEntries = [];
   }
 

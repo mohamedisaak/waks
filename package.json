@@ -13,7 +13,8 @@
     "stripe:ngrok-url": "node scripts/stripe-ngrok-url.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "seo:verify": "node scripts/seo-verify.mjs"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.61.3",
