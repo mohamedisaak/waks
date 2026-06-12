@@ -14,7 +14,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "seo:verify": "node scripts/seo-verify.mjs"
+    "seo:verify": "node scripts/seo-verify.mjs",
+    "clerk:production-prep": "node scripts/clerk-production-prep.mjs",
+    "clerk:production-env": "node scripts/clerk-production-env.mjs",
+    "clerk:production-guide": "node scripts/clerk-production-guide.mjs",
+    "clerk:dns-check": "node scripts/clerk-dns-check.mjs"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.61.3",

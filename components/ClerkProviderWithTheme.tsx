@@ -13,7 +13,6 @@ export default function ClerkProviderWithTheme({
 
   return (
     <ClerkProvider
-      dynamic
       appearance={{
         baseTheme: resolvedTheme === "dark" ? dark : undefined,
         variables: {

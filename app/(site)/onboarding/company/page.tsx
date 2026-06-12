@@ -61,8 +61,8 @@ export default function CompanyOnboardingPage() {
 }
 
 function CompanyOnboardingContent() {
-  const { isLoaded: authLoaded, orgId } = useAuth();
-  const { paths, isPlatformAdmin } = useManagementNav();
+  const { isLoaded: authLoaded, isSignedIn, orgId } = useAuth();
+  const { paths } = useManagementNav();
   const { isLoaded: orgListLoaded, createOrganization, setActive } =
     useOrganizationList();
   const upsertOrg = useMutation(api.organizations.upsertOrg);
@@ -70,6 +70,9 @@ function CompanyOnboardingContent() {
   const searchParams = useSearchParams();
   const plan = searchParams.get("plan") ?? undefined;
   const planInfo = plan ? PLAN_LABELS[plan] : undefined;
+  const returnTo = `/onboarding/company${
+    searchParams.toString() ? `?${searchParams.toString()}` : ""
+  }`;
 
   const [form, setForm] = useState({
     companyName: "",
@@ -82,11 +85,19 @@ function CompanyOnboardingContent() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (authLoaded && !orgId) return;
-    if (authLoaded && orgId) {
+    if (!authLoaded) return;
+
+    if (!isSignedIn) {
+      router.replace(
+        `/sign-up?redirect_url=${encodeURIComponent(returnTo)}`
+      );
+      return;
+    }
+
+    if (orgId) {
       router.replace(paths.home);
     }
-  }, [authLoaded, orgId, router, paths.home]);
+  }, [authLoaded, isSignedIn, orgId, router, paths.home, returnTo]);
 
   function field(key: keyof typeof form) {
     return {
@@ -140,7 +151,7 @@ function CompanyOnboardingContent() {
     }
   }
 
-  if (!authLoaded || !orgListLoaded) {
+  if (!authLoaded || !isSignedIn || !orgListLoaded) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-cream">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-border-strong border-t-gray-900" />

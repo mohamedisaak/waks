@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { SignUp } from "@clerk/nextjs";
 import { AuthBranding } from "@/components/AuthBranding";
+import { SignUpPanel } from "@/components/ClerkAuthPanel";
 
 export const metadata: Metadata = {
   title: "Sign up",
@@ -18,7 +18,7 @@ export default async function SignUpPage({
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-surface-muted px-4">
       <AuthBranding />
-      <SignUp forceRedirectUrl={redirectUrl} />
+      <SignUpPanel forceRedirectUrl={redirectUrl} />
     </main>
   );
 }

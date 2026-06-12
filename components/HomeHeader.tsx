@@ -1,16 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  useAuth,
-  useOrganizationList,
-} from "@clerk/nextjs";
-import UserButtonWithProfile from "./UserButtonWithProfile";
-import ThemeToggle from "./ThemeToggle";
+import { useAuth, useOrganizationList } from "@clerk/nextjs";
+import AuthHeaderControls from "./AuthHeaderControls";
 import { usePathname } from "next/navigation";
 import { useManagementNav } from "@/hooks/useManagementNav";
 
@@ -133,31 +125,7 @@ export default function HomeHeader() {
           )}
         </div>
 
-        {/* Auth */}
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <SignedIn>
-            <UserButtonWithProfile />
-          </SignedIn>
-          <SignedOut>
-            <SignInButton mode="modal">
-              <button
-                type="button"
-                className="text-sm text-muted hover:text-foreground px-3 py-2 transition-colors"
-              >
-                Sign in
-              </button>
-            </SignInButton>
-            <SignUpButton mode="modal">
-              <button
-                type="button"
-                className="text-sm font-medium bg-[#4CAF7D] text-white px-5 py-2 rounded-full hover:bg-[#3d9e6e] transition-colors"
-              >
-                Get Started
-              </button>
-            </SignUpButton>
-          </SignedOut>
-        </div>
+        <AuthHeaderControls />
       </div>
     </header>
   );

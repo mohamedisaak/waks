@@ -5,8 +5,8 @@ import { api } from "@/convex/_generated/api";
 import type { Doc, Id } from "@/convex/_generated/dataModel";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
-import UserButtonWithProfile from "@/components/UserButtonWithProfile";
+import { useAuth, SignInButton, SignedOut } from "@clerk/nextjs";
+import HomeHeader from "@/components/HomeHeader";
 import {
   MapPin,
   Briefcase,
@@ -472,60 +472,7 @@ export default function MyApplicationsPage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <header className="bg-surface border-b border-border px-6 py-3.5 sticky top-0 z-20">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="flex gap-1">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#4CAF7D]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#4CAF7D] opacity-50" />
-              </div>
-              <span className="text-lg font-extrabold text-foreground tracking-tight">
-                Waks
-              </span>
-            </Link>
-            <nav className="flex items-center gap-1">
-              <Link
-                href="/jobs"
-                className="flex items-center gap-1.5 text-foreground/70 text-sm font-medium px-4 py-1.5 rounded-full hover:bg-surface-muted hover:text-foreground transition-colors"
-              >
-                <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                  <path
-                    fillRule="evenodd"
-                    d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Jobs
-              </Link>
-              {userId && (
-                <Link
-                  href="/my-applications"
-                  className="flex items-center gap-1.5 bg-surface-muted text-foreground text-sm font-medium px-4 py-1.5 rounded-full"
-                >
-                  Applications
-                </Link>
-              )}
-            </nav>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <SignedIn>
-              <UserButtonWithProfile />
-            </SignedIn>
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button
-                  type="button"
-                  className="h-8 w-8 rounded-full bg-[#4CAF7D] text-white text-sm font-bold flex items-center justify-center hover:bg-[#3d9e6e] transition-colors"
-                >
-                  ?
-                </button>
-              </SignInButton>
-            </SignedOut>
-          </div>
-        </div>
-      </header>
+      <HomeHeader />
 
       <main className="max-w-3xl mx-auto px-6 py-10">
         <div className="mb-8">

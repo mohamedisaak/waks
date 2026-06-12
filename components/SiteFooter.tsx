@@ -10,7 +10,10 @@ const FOOTER_LINKS = {
   employers: [
     { href: "/employers", label: "For employers" },
     { href: "/employers/pricing", label: "Pricing" },
-    { href: "/onboarding/company", label: "Post a job" },
+    {
+      href: `/sign-up?redirect_url=${encodeURIComponent("/onboarding/company")}`,
+      label: "Post a job",
+    },
   ],
   company: [
     { href: "/about", label: "About Waks" },

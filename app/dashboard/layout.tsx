@@ -19,7 +19,7 @@ export default async function DashboardLayout({
   }
 
   if (!orgId) {
-    redirect("/create-organization");
+    redirect("/onboarding/company");
   }
 
   return (
