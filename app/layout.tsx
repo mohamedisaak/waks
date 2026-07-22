@@ -5,6 +5,7 @@ import ConvexClientProvider from "@/components/ConvexClientProvider";
 import SiteAnalyticsBeacon from "@/components/SiteAnalyticsBeacon";
 import ThemeProvider from "@/components/ThemeProvider";
 import ClerkProviderWithTheme from "@/components/ClerkProviderWithTheme";
+import { ADSENSE_PUBLISHER_ID } from "@/lib/adsense";
 import { DEFAULT_SITE_ORIGIN, getSiteOrigin } from "@/lib/siteUrl";
 
 const geistSans = Geist({
@@ -84,6 +85,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
+          crossOrigin="anonymous"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

@@ -1,3 +1,6 @@
+/** Google AdSense publisher ID — also loaded globally in `<head>` for site verification. */
+export const ADSENSE_PUBLISHER_ID = "ca-pub-7778288288752826";
+
 /** Parsed from admin field `publisherId:slotId` (e.g. `ca-pub-1234567890123456:9876543210`). */
 export type ParsedAdsenseClientSlot = {
   clientId: string;
