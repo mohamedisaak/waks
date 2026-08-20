@@ -5,11 +5,19 @@ import AuthHeaderControls from "@/components/AuthHeaderControls";
 
 export default function SiteHeaderAuth({
   signedInExtras,
+  collapseOnMobile = false,
 }: {
   /** Shown only when signed in (e.g. Browse Jobs on the marketing homepage). */
   signedInExtras?: React.ReactNode;
+  /** Hide the Sign in / Get Started CTAs on mobile (surfaced in the mobile menu). */
+  collapseOnMobile?: boolean;
 }) {
-  return <AuthHeaderControls signedInExtras={signedInExtras} />;
+  return (
+    <AuthHeaderControls
+      signedInExtras={signedInExtras}
+      collapseOnMobile={collapseOnMobile}
+    />
+  );
 }
 
 export function BrowseJobsLink() {

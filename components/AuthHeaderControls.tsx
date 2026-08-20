@@ -15,27 +15,42 @@ export default function AuthHeaderControls({
   signedInExtras,
   signUpLabel = "Get Started",
   signUpHref = "/sign-up",
+  collapseOnMobile = false,
 }: {
   signedInExtras?: React.ReactNode;
   signUpLabel?: string;
   signUpHref?: string;
+  /** Hide the Sign in / Get Started CTAs (and signed-in extras) on mobile,
+   *  where a companion mobile menu surfaces them instead. */
+  collapseOnMobile?: boolean;
 }) {
   const { isLoaded, isSignedIn } = useAuth();
+  const mobileHidden = collapseOnMobile ? "hidden md:inline-flex" : "";
 
   return (
     <div className="flex items-center gap-2">
       <ThemeToggle />
       {isLoaded && isSignedIn ? (
         <>
-          {signedInExtras}
+          {collapseOnMobile ? (
+            <span className="hidden md:contents">{signedInExtras}</span>
+          ) : (
+            signedInExtras
+          )}
           <UserButtonWithProfile />
         </>
       ) : (
         <>
-          <Link href="/sign-in" className={signInClassName}>
+          <Link
+            href="/sign-in"
+            className={`${signInClassName} ${mobileHidden}`.trim()}
+          >
             Sign in
           </Link>
-          <Link href={signUpHref} className={signUpClassName}>
+          <Link
+            href={signUpHref}
+            className={`${signUpClassName} ${mobileHidden}`.trim()}
+          >
             {signUpLabel}
           </Link>
         </>

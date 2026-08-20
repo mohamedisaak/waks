@@ -67,8 +67,8 @@ export default async function Home() {
           </nav>
 
           {/* Auth + mobile menu */}
-          <div className="flex items-center gap-1">
-            <SiteHeaderAuth signedInExtras={<BrowseJobsLink />} />
+          <div className="flex items-center gap-2">
+            <SiteHeaderAuth signedInExtras={<BrowseJobsLink />} collapseOnMobile />
             <MobileNav />
           </div>
         </div>
