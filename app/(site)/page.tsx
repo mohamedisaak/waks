@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import SiteHeaderAuth, { BrowseJobsLink } from "@/components/SiteHeaderAuth";
+import MobileNav from "@/components/MobileNav";
 import HomeMarketingExtras from "@/components/HomeMarketingExtras";
 import MarketingCtaBand from "@/components/MarketingCtaBand";
 import HiringPortalCta from "@/components/HiringPortalCta";
@@ -65,8 +66,11 @@ export default async function Home() {
             </Link>
           </nav>
 
-          {/* Auth */}
-          <SiteHeaderAuth signedInExtras={<BrowseJobsLink />} />
+          {/* Auth + mobile menu */}
+          <div className="flex items-center gap-1">
+            <SiteHeaderAuth signedInExtras={<BrowseJobsLink />} />
+            <MobileNav />
+          </div>
         </div>
       </header>
 
